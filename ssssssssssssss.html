@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year 2025</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to top, #0f2027, #203a43, #2c5364);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin: 0;
+            margin-top: 20%;
+            animation: glow 2s infinite alternate;
+            text-shadow: 0 0 10px #ff9a8b, 0 0 20px #ff6a88, 0 0 30px #ff99cc;
+        }
+
+        p {
+            font-size: 1.5rem;
+            margin-top: 10px;
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px #ff9a8b, 0 0 20px #ff6a88, 0 0 30px #ff99cc;
+            }
+            100% {
+                text-shadow: 0 0 20px #f0932b, 0 0 30px #f0932b, 0 0 40px #ff6347;
+            }
+        }
+
+        #clock {
+            font-size: 3rem;
+            margin-top: 30px;
+            color: #ffdd59;
+            text-shadow: 0 0 10px #f0932b, 0 0 20px #f9ca24;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎉 Happy New Year 2025 🎉</h1>
+    <p>Celebrate the arrival of a wonderful new year!</p>
+    <div id="clock"></div>
+    <canvas id="confetti"></canvas>
+
+    <script>
+        // Clock for countdown or time display
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Confetti Effect
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const confetti = [];
+        const colors = ['#f0932b', '#eb4d4b', '#6ab04c', '#22a6b3', '#be2edd'];
+
+        function createConfettiPiece() {
+            return {
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 10 + 5,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                speedX: Math.random() * 2 - 1,
+                speedY: Math.random() * 3 + 1,
+                rotation: Math.random() * 360,
+                rotationSpeed: Math.random() * 10 - 5,
+            };
+        }
+
+        for (let i = 0; i < 200; i++) {
+            confetti.push(createConfettiPiece());
+        }
+
+        function updateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            confetti.forEach(p => {
+                p.y += p.speedY;
+                p.x += p.speedX;
+                p.rotation += p.rotationSpeed;
+
+                if (p.y > canvas.height) p.y = -p.size;
+                if (p.x > canvas.width) p.x = -p.size;
+                if (p.x < -p.size) p.x = canvas.width;
+
+                ctx.save();
+                ctx.translate(p.x + p.size / 2, p.y + p.size / 2);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                ctx.restore();
+            });
+
+            requestAnimationFrame(updateConfetti);
+        }
+
+        updateConfetti();
+
+        // Resize Canvas on Window Resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
